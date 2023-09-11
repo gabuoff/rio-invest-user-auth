@@ -1,6 +1,4 @@
-package com.rioinvest.authms.domain;
-
-import java.util.Date;
+package com.rioinvest.authms.domain.register;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

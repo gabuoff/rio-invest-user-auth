@@ -1,26 +1,32 @@
 package com.rioinvest.authms.service;
 
-import com.rioinvest.authms.domain.User;
+import com.rioinvest.authms.domain.register.RegistrationRequest;
+import com.rioinvest.authms.domain.user.User;
 import com.rioinvest.authms.enums.ErrorMessages;
 import com.rioinvest.authms.exceptions.ErrorsSystem;
+import com.rioinvest.authms.mapper.UserRegistrationMapper;
 import com.rioinvest.authms.repository.UserRepository;
+import com.rioinvest.authms.utils.ConvertDate;
+import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RegistrationService {
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public RegistrationService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    public void registerUser(User user) {
+    public void registerUser(RegistrationRequest reg) {
+        Date dateOfBirth = ConvertDate.converDate(reg.dateOfBirth());
+        String encodedPassword = passwordEncoder.encode(reg.password());
+        User user = UserRegistrationMapper.userMapper(reg, dateOfBirth, encodedPassword);
         validar(user.getUsername(), user.getEmail(), user.getCpf());
         userRepository.save(user);
     }

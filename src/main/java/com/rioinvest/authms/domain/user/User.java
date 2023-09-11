@@ -1,4 +1,4 @@
-package com.rioinvest.authms.domain;
+package com.rioinvest.authms.domain.user;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.rioinvest.authms.domain.login.LoginAudit;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,12 +40,10 @@ public class User implements UserDetails{
     @DBRef(lazy = true)
     private LoginAudit audit;
 
-   // Define roles and authorities for the user
     private Set<String> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Convert user roles to Spring Security GrantedAuthority objects
         Set<GrantedAuthority> authorities = new HashSet<>();
         for (String role : roles) {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
@@ -53,8 +53,7 @@ public class User implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
-        // Implement account expiration logic if needed
-        return true; // Assuming no account expiration logic for now
+        return true;
     }
 
     @Override
@@ -64,8 +63,7 @@ public class User implements UserDetails{
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // Implement credentials expiration logic if needed
-        return true; // Assuming no credentials expiration logic for now
+        return true;
     }
 
     @Override

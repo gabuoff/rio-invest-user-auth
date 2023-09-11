@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rioinvest.authms.domain.LoginRequest;
-import com.rioinvest.authms.domain.User;
+import com.rioinvest.authms.domain.login.LoginRequest;
+import com.rioinvest.authms.domain.user.User;
 import com.rioinvest.authms.service.TokenService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class LoginController {
     
     @Autowired
@@ -34,8 +34,8 @@ public class LoginController {
         var auth = authenticationManager.authenticate(token);
 
         Map<String, String> response = new HashMap<>();
-        response.put("token",  tokenService.generateToken((User) auth.getPrincipal()));
-
+        var tokenResponse =  tokenService.generateToken((User) auth.getPrincipal());
+        response.put("token", tokenResponse);
         return ResponseEntity.ok(response);
     }
 }

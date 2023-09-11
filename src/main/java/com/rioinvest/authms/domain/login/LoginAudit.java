@@ -1,4 +1,4 @@
-package com.rioinvest.authms.domain;
+package com.rioinvest.authms.domain.login;
 
 import java.util.Date;
 
